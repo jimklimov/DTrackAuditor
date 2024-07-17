@@ -1,11 +1,13 @@
+[![Scorecard supply-chain security](https://github.com/thinksabin/DTrackAuditor/actions/workflows/scorecard.yml/badge.svg)](https://github.com/thinksabin/DTrackAuditor/actions/workflows/scorecard.yml)
+[![OpenSSF Scorecard](https://api.securityscorecards.dev/projects/github.com/thinksabin/DTrackAuditor/badge)](https://securityscorecards.dev/viewer/?uri=github.com/thinksabin/DTrackAuditor/)
 # DTrackAuditor
 
-DTrackAuditor is the python script to facilitate usage of [DependencyTrack](https://dependencytrack.org/) in the CI, optionally failing the build based on different parameters.
+DTrackAuditor is the python script to ease usage of [DependencyTrack](https://dependencytrack.org/) in the CI, optionally failing the build based on different parameters.
 
 # Development and Tests
 
-* python 3.10.6
-* DependencyTrack 4.7
+* python 3.11.8
+* DependencyTrack 4.10
 
 ### Features  
 
@@ -15,6 +17,9 @@ DTrackAuditor is the python script to facilitate usage of [DependencyTrack](http
 4. Filter based on severity type (critical, high, medium, low, unassigned) and numbers, e.g.: if number of critical is higher or equal to 10.
 5. Check policy violations and fail if any found.
 6. Return 0 or 1 exit status for Auto mode.
+
+### Recommended usage
+* For the latest update use clone this repo and use it as your preference.
 
 ### Quick Install
 
@@ -46,6 +51,10 @@ python3 dtrackauditor.py \
     -p myweb -v 1.0.0 \
     -f myweb/target/bom.xml \
     -a
+```
+
+```
+(.venv) PS C:\Users\dells\OneDrive\Documents\GitHub\DTrackAuditor\dtrackauditor> ..\.venv\Scripts\python.exe .\dtrackauditor.py -a -u 'http://mydtrack.local:8080' -k 'mydtrackapikey' -p ddweb -v 1.0.0 -f .\test\bom.xml --wait
 ```
 If environment variable for `DTRACK_SERVER` and `DTRACK_API_KEY` are present then the usage can be direct:
 

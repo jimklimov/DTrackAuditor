@@ -769,7 +769,7 @@ class Auditor:
 
         project_findings = Auditor.get_project_findings(host, key, project_uuid, verify=verify)
         severity_scores = Auditor.get_project_finding_severity(project_findings)
-        print(severity_scores)
+        print("severity_scores,  ",severity_scores)
 
         vuln_details = list(map(lambda f: Auditor.get_issue_details(f), project_findings))
 
@@ -777,19 +777,32 @@ class Auditor:
             for items in vuln_details:
                 print(items)
 
+        # the condition for checking rules, i.e.
+        #   -r critical:1:false,high:2:false,medium:10:false,low:10:false
         for rule in rules:
             severity, count, fail = rule.split(':')
-            fail = True
-            if fail == 'false':
-                fail = False
+            severity = severity.strip()
+            count = count.strip()
+            fail = fail.strip()
+
+            #fail = True
+            if fail == 'True' or fail == 'true':
+                fail = 'True'
+            # not failing by default
+            else:
+                fail = 'False'
+
             s_issue_count = severity_scores.get(severity.upper())
+
             if s_issue_count is None:
                 continue
             if s_issue_count >= int(count):
-                message = "Threshold for %s severity issues exceeded." % severity.upper()
-                if fail is True:
+                message = "Threshold for {severity_category} severity issues exceeded. Failing as per instructed rules (-r)".format(severity_category=severity.upper())
+                if fail == 'True':
                     raise AuditorException(message)
-                print(message)
+                    print(message)
+                else:
+                    continue
 
         print('Vulnerability audit resulted in no violations.')
 
